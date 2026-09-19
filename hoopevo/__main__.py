@@ -28,6 +28,11 @@ def main(argv=None) -> int:
     rp = sub.add_parser("replay", help="进化冠军战术并打开 tkinter 回放")
     rp.add_argument("--seed", type=int, default=0)
 
+    mp = sub.add_parser("manage", help="赛季模式：你来驾驶进化（育种/考察/试炼）")
+    mp.add_argument("--seed", type=int, default=0)
+    mp.add_argument("--weeks", type=int, default=10)
+    mp.add_argument("--auto", action="store_true", help="自动主管（测试/演示）")
+
     args = ap.parse_args(argv)
     if not args.cmd:
         ap.print_help()
@@ -35,6 +40,11 @@ def main(argv=None) -> int:
 
     from hoopevo.csi import report
     from hoopevo.evolution import evolve
+
+    if args.cmd == "manage":
+        from hoopevo.manage import Manager
+        Manager(seed=args.seed, weeks=args.weeks, auto=args.auto).run()
+        return 0
 
     if args.cmd == "evolve":
         champ, _hist = evolve(pop_size=args.pop, gens=args.gens,

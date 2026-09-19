@@ -122,5 +122,32 @@ class TestCSI(unittest.TestCase):
         self.assertEqual(region_name((0.5, 1.0)), "篮下")
 
 
+class TestTrials(unittest.TestCase):
+    def test_trials_structure_and_grade(self):
+        import random
+        from hoopevo.trials import grade, run_trials
+        g = tactics.random_genome(random.Random(3))
+        results = run_trials(g, seed=9, n=6)
+        self.assertEqual(len(results), 3)
+        for r in results:
+            self.assertIsInstance(r.passed, bool)
+            self.assertTrue(r.detail)
+        self.assertIn(grade(results), ("S", "A", "B", "C"))
+
+
+class TestManage(unittest.TestCase):
+    def test_auto_season_completes(self):
+        import contextlib
+        import io
+        from hoopevo.manage import Manager
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            result = Manager(seed=4, weeks=2, auto=True).run()
+        self.assertIn(result["grade"], ("S", "A", "B", "C"))
+        self.assertTrue(0 <= result["passed"] <= 3)
+        self.assertTrue(hasattr(result["genome"], "routes"))
+        self.assertIn("试炼结果", buf.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()
