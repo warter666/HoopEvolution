@@ -38,13 +38,13 @@ class ReplayApp:
         self.canvas.pack()
         bar = tk.Frame(root, bg="#161d2b")
         bar.pack(fill="x")
-        tk.Button(bar, text="⏯ 播放/暂停", command=self._toggle,
+        tk.Button(bar, text="播放/暂停", command=self._toggle,
                   relief="flat", bg="#1b2430", fg=C_TEXT).pack(side="left",
                                                               padx=6, pady=4)
-        tk.Button(bar, text="⏮ 上一回合", command=lambda: self._skip(-1),
+        tk.Button(bar, text="上一回合", command=lambda: self._skip(-1),
                   relief="flat", bg="#1b2430", fg=C_TEXT).pack(side="left",
                                                               padx=6, pady=4)
-        tk.Button(bar, text="下一回合 ⏭", command=lambda: self._skip(1),
+        tk.Button(bar, text="下一回合", command=lambda: self._skip(1),
                   relief="flat", bg="#1b2430", fg=C_TEXT).pack(side="left",
                                                               padx=6, pady=4)
         self.lbl = tk.Label(bar, text="", fg=C_TEXT, bg="#161d2b",
